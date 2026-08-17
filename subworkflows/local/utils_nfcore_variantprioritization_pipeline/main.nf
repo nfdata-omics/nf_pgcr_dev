@@ -88,6 +88,7 @@ workflow PIPELINE_INITIALISATION {
         before_text,
         after_text,
         command,
+        null
     )
 
     //
@@ -293,24 +294,9 @@ def processSamplesheet(row) {
     // meta.id for process tags (always scalar string)
     meta.id = "${meta.patient}.${meta.sample}.${meta.tool}".toString()
 
-    // Check if the VCF file is bgzipped
-    if (vcf.toString().endsWith('.gz')) {
-        meta.bgzip_vcf = true
-    }
-    else {
-        meta.bgzip_vcf = false
-    }
-
     // Check existence of TBI indexed VCF file (presumed to be in the same directory)
     def tbi = vcf.toString() + '.tbi'
-    if (!file(tbi).exists()) {
-        meta.tabix_vcf = false
-        tbi = []
-    }
-    else {
-        meta.tabix_vcf = true
-        tbi = file(tbi)
-    }
+    tbi = file(tbi).exists() ? file(tbi) : []
 
     // Return processed row
     return [meta, vcf, tbi, cna]

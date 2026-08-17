@@ -4,13 +4,17 @@
             19,
             {
                 "BCFTOOLS_FILTER": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
                 },
                 "BCFTOOLS_NORM": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
+                },
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": 1.24,
+                    "xz": "5.8.3"
                 },
                 "INTERSECT_VCF": {
-                    "bcftools": 1.22,
+                    "bcftools": "1.23.1",
                     "pandas": "2.3.3",
                     "pysam": "0.23.3",
                     "python": "3.10.19"
@@ -33,13 +37,10 @@
                     "vcf2tsvpy": "0.6.1"
                 },
                 "REFORMAT_VCF": {
-                    "bcftools": 1.22,
+                    "bcftools": "1.23.1",
                     "pandas": "2.3.3",
                     "pysam": "0.23.3",
                     "python": "3.10.19"
-                },
-                "TABIX_TABIX": {
-                    "tabix": 1.21
                 },
                 "UNTAR_PCGR_DB": {
                     "untar": 1.34
@@ -78,6 +79,13 @@
                 "custom/reformat/HCC1395.HCC1395T.strelka_snv.reformatted.vcf.gz",
                 "custom/reformat/HCC1395.HCC1395T.strelka_snv.reformatted.vcf.gz.tbi",
                 "custom/reformat/HCC1395T.reformatted.allelic_cna.tsv",
+                "htslib",
+                "htslib/HCC1395.HCC1395T.mutect2.vcf.gz",
+                "htslib/HCC1395.HCC1395T.mutect2.vcf.gz.tbi",
+                "htslib/HCC1395.HCC1395T.strelka_indel.vcf.gz",
+                "htslib/HCC1395.HCC1395T.strelka_indel.vcf.gz.tbi",
+                "htslib/HCC1395.HCC1395T.strelka_snv.vcf.gz",
+                "htslib/HCC1395.HCC1395T.strelka_snv.vcf.gz.tbi",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -105,11 +113,7 @@
                 "pcgr/HCC1395.HCC1395T/HCC1395.HCC1395T.pcgr.grch38.xlsx",
                 "pipeline_info",
                 "pipeline_info/nf_core_variantprioritization_software_mqc_versions.yml",
-                "reference",
-                "tabix",
-                "tabix/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz.tbi",
-                "tabix/HCC1395T_vs_HCC1395N.strelka.somatic_indels_chr22.vcf.gz.tbi",
-                "tabix/HCC1395T_vs_HCC1395N.strelka.somatic_snvs_chr22.vcf.gz.tbi"
+                "reference"
             ],
             [
                 "HCC1395.HCC1395T_keys.txt:md5,48416a5b08a9baff4eced54f1a97bc15",
@@ -134,6 +138,9 @@
                 "HCC1395.HCC1395T.mutect2.reformatted.vcf.gz:md5,4edb5a875785d5749b59875e9f3bbab4",
                 "HCC1395.HCC1395T.strelka_indel.reformatted.vcf.gz:md5,293b005d551e950b6d35d71dfbe1518a",
                 "HCC1395.HCC1395T.strelka_snv.reformatted.vcf.gz:md5,966b32e08e0b9536ab811fff987a30d6",
+                "HCC1395.HCC1395T.mutect2.vcf.gz:md5,b1d4963aa38fb47a45a20564ce150eed",
+                "HCC1395.HCC1395T.strelka_indel.vcf.gz:md5,fe7a61db9fd2e42c60e77fd6544b665e",
+                "HCC1395.HCC1395T.strelka_snv.vcf.gz:md5,b892930db7017fa9053b6a1191f90694",
                 "HCC1395.HCC1395T.pcgr.grch38.pass.vcf.gz:md5,db5fe3423d94d8107e1ea2ab57bce027",
                 "HCC1395.HCC1395T.pcgr.grch38.vcf.gz:md5,db5fe3423d94d8107e1ea2ab57bce027",
                 "clinvar.vcf.gz:md5,8d3b4f3fa176287738ae82e72e26eac9",
@@ -145,10 +152,10 @@
             ],
             "No warnings"
         ],
+        "timestamp": "2026-07-14T18:33:16.657156203",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-16T16:43:39.062675595"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
     }
 }

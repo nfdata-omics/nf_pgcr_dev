@@ -4,16 +4,17 @@
             11,
             {
                 "BCFTOOLS_FILTER": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
                 },
                 "BCFTOOLS_NORM": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
                 },
                 "CPSR_RUN": {
                     "cpsr": "2.2.5"
                 },
-                "TABIX_TABIX": {
-                    "tabix": 1.21
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": 1.24,
+                    "xz": "5.8.3"
                 },
                 "UNTAR_PCGR_DB": {
                     "untar": 1.34
@@ -55,6 +56,11 @@
                 "cpsr/NA12878.haplotypecaller_calls/NA12878.haplotypecaller_calls.cpsr.grch38.vcf.gz",
                 "cpsr/NA12878.haplotypecaller_calls/NA12878.haplotypecaller_calls.cpsr.grch38.vcf.gz.tbi",
                 "cpsr/NA12878.haplotypecaller_calls/NA12878.haplotypecaller_calls.cpsr.grch38.xlsx",
+                "htslib",
+                "htslib/NA12878.deepvariant_calls.deepvariant.vcf.gz",
+                "htslib/NA12878.deepvariant_calls.deepvariant.vcf.gz.tbi",
+                "htslib/NA12878.haplotypecaller_calls.haplotypecaller.vcf.gz",
+                "htslib/NA12878.haplotypecaller_calls.haplotypecaller.vcf.gz.tbi",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -67,10 +73,7 @@
                 "multiqc/multiqc_report.html",
                 "pipeline_info",
                 "pipeline_info/nf_core_variantprioritization_software_mqc_versions.yml",
-                "reference",
-                "tabix",
-                "tabix/NA12878.deepvariant.chr22.vcf.gz.tbi",
-                "tabix/NA12878.haplotypecaller.chr22.vcf.gz.tbi"
+                "reference"
             ],
             [
                 "NA12878.deepvariant_calls.cpsr.grch38.classification.tsv.gz:md5,a19e3177fa4277eca084d6c6a84c410b",
@@ -88,6 +91,8 @@
                 "NA12878.deepvariant_calls.cpsr.grch38.vcf.gz:md5,c88ab4643b47fea988a2a0453afe1c8",
                 "NA12878.haplotypecaller_calls.cpsr.grch38.pass.vcf.gz:md5,57cee0c5b2754cc1daf140d60ecb1f57",
                 "NA12878.haplotypecaller_calls.cpsr.grch38.vcf.gz:md5,57cee0c5b2754cc1daf140d60ecb1f57",
+                "NA12878.deepvariant_calls.deepvariant.vcf.gz:md5,cb0e388d8c5cbaa713ea8c9fe520a1d9",
+                "NA12878.haplotypecaller_calls.haplotypecaller.vcf.gz:md5,7640573b8d479247fc65bc5903be0ccd",
                 "clinvar.vcf.gz:md5,8d3b4f3fa176287738ae82e72e26eac9",
                 "dbmts.vcf.gz:md5,fe9d26d3f24a49fde2d98a62ec329de5",
                 "dbnsfp.vcf.gz:md5,9fe7521182b9bd0c07f233f168504e8f",
@@ -97,10 +102,10 @@
             ],
             "No warnings"
         ],
+        "timestamp": "2026-07-14T18:22:49.744415348",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-10T14:27:30.318687541"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
     }
 }

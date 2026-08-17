@@ -4,16 +4,16 @@
             22,
             {
                 "BCFTOOLS_FILTER": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
                 },
                 "BCFTOOLS_NORM": {
-                    "bcftools": 1.22
+                    "bcftools": "1.23.1"
                 },
                 "CPSR_RUN": {
                     "cpsr": "2.2.5"
                 },
                 "INTERSECT_VCF": {
-                    "bcftools": 1.22,
+                    "bcftools": "1.23.1",
                     "pandas": "2.3.3",
                     "pysam": "0.23.3",
                     "python": "3.10.19"
@@ -41,7 +41,7 @@
                     "vcf2tsvpy": "0.6.1"
                 },
                 "REFORMAT_VCF": {
-                    "bcftools": 1.22,
+                    "bcftools": "1.23.1",
                     "pandas": "2.3.3",
                     "pysam": "0.23.3",
                     "python": "3.10.19"

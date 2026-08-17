@@ -3,9 +3,9 @@ process INTERSECT_VCF {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e865b57ba6a9b7164c8018cf631df0ae2746cf5ca3db5666502fc0d61d9bcf91/data'
-        : 'community.wave.seqera.io/library/bcftools_pysam_pandas_python:6b813c53a7ef4ede'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f3833b76564f6d94f8aeedf1b7242920feec139034dc77ef454de8af002a0f9/data'
+        : 'community.wave.seqera.io/library/bcftools_pysam_pandas_python:c4549d7814cd0bee'}"
 
     input:
     tuple val(meta), path(vcfs, stageAs: 'inputs/*'), path(tbis, stageAs: 'inputs/*')

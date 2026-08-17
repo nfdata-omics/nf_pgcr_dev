@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#93](https://github.com/nf-core/variantprioritization/pull/93) - Template update for nf-core/tools v4.0.2 (@HomoPolyethylen)
 - [#96](https://github.com/nf-core/variantprioritization/pull/96) - moved sample-specific PCGR parameters to samplesheet (@HomoPolyethylen)
+- [#100](https://github.com/nf-core/variantprioritization/pull/100) - updated modules and subworkflows (@HomoPolyethylen)
 
 ### Fixed
 
@@ -22,7 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| MultiQC    | 1.32        | 1.34        |
+| bcftools   | 1.22        | 1.23.1      |
+| htslib     | 1.21        | 1.24        |
+| MultiQC    | 1.32        | 1.35        |
 
 ### Parameters
 

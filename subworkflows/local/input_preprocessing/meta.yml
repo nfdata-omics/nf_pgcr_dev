@@ -10,8 +10,7 @@ keywords:
 components:
   - bcftools/filter
   - bcftools/norm
-  - tabix/bgziptabix
-  - tabix/tabix
+  - htslib/bgziptabix
 input:
   - ch_samplesheet:
       type: map

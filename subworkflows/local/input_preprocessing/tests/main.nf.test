@@ -11,8 +11,7 @@ nextflow_workflow {
     tag "subworkflows/input_preprocessing"
     tag "bcftools/filter"
     tag "bcftools/norm"
-    tag "tabix/bgziptabix"
-    tag "tabix/tabix"
+    tag "htslib/bgziptabix"
     tag "ci_test"
 
     test("human - single - [vcf,[],cna]") {
@@ -22,7 +21,7 @@ nextflow_workflow {
                 params.cna_analysis = true
                 input[0] = channel.of(
                     [
-                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'MALE', tumor_site: null, tumor_purity: null, tumor_ploidy: null, bgzip_vcf:false, tabix_vcf:false],
+                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'MALE', tumor_site: null, tumor_purity: null, tumor_ploidy: null],
                         file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf', checkIfExists: true),
                         [],
                         file(params.pipelines_testdata_base_path + 'module_data/preparevcf/HCC1395T.reformatted.allelic_cna.tsv', checkIfExists: true)
@@ -53,7 +52,7 @@ nextflow_workflow {
                 """
                 input[0] = channel.of(
                     [
-                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', bgzip_vcf:true, tabix_vcf:true, tumor_site: 4, tumor_purity: 0.7, tumor_ploidy: 1.2],
+                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site: 4, tumor_purity: 0.7, tumor_ploidy: 1.2],
                         file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz', checkIfExists: true),
                         file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz.tbi', checkIfExists: true),
                         []

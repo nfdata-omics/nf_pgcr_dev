@@ -36,8 +36,9 @@ Reference resources are only written to the results directory when you request d
 <details markdown="1">
 <summary>Output files</summary>
 
-- `tabix/`
-  - `*.tbi`: tabix index files created for input VCFs that were missing an index (for example `tabix/HCC1395T_vs_HCC1395N.mutect2.filtered.vcf.gz.tbi`).
+- `htslib/`
+  - `*.vcf.gz`: compressed input VCF files
+  - `*.tbi`: tabix index files for input VCFs (for example `htslib/HCC1395T_vs_HCC1395N.mutect2.filtered.vcf.gz.tbi`).
 - `bcftools/norm/`
   - `{sample}.{caller}.norm.vcf.gz` and `.tbi`: left-aligned, normalized VCFs produced by `bcftools norm` using the reference FASTA.
 - `bcftools/filter/`

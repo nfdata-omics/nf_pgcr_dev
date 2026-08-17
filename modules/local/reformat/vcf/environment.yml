@@ -2,7 +2,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::bcftools=1.22
+  - bioconda::bcftools=1.23.1
   - bioconda::pysam=0.23.3
   - conda-forge::pandas=2.3.3
   - conda-forge::python=3.10.19
