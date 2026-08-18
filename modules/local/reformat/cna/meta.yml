@@ -1,0 +1,99 @@
+name: reformat_cna
+description: Reformat CNA segment files from ASCAT or CNVkit into PCGR-compatible tabular copy-number format
+keywords:
+  - cna
+  - cnv
+  - ascat
+  - cnvkit
+  - reformat
+tools:
+  - reformat_cna.py:
+      description: |
+        Local helper script that detects ASCAT or CNVkit-style CNA inputs and
+        converts them into a standardized TSV with Chromosome, Start, End, nMajor, nMinor.
+      documentation: https://github.com/nf-core/variantprioritization
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'patient.sample', patient:'patient', sample:'sample', status:'somatic' ]
+    - cna:
+        type: file
+        description: Input CNA segment file
+        pattern: "*.{tsv,txt,cns}"
+output:
+  cna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.tsv":
+          type: file
+          description: Reformatted CNA file for downstream PCGR input
+          pattern: "*.tsv"
+  versions_numpy:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - numpy:
+          type: string
+          description: The tool name
+      - "python -c 'import numpy; print(numpy.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pandas:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pandas:
+          type: string
+          description: The tool name
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pysam:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pysam:
+          type: string
+          description: The tool name
+      - "python -c 'import pysam; print(pysam.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - python:
+          type: string
+          description: The tool name
+      - "python --version | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+  versions_vcf2tsvpy:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - vcf2tsvpy:
+          type: string
+          description: The tool name
+      - "vcf2tsvpy --version  | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - tool:
+          type: string
+          description: Tool name
+      - version:
+          type: string
+          description: Reported tool version
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

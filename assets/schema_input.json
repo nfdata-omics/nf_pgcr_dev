@@ -7,27 +7,80 @@
     "items": {
         "type": "object",
         "properties": {
+            "patient": {
+                "pattern": "^\\S+$",
+                "meta": ["patient"]
+            },
+            "status": {
+                "type": "integer",
+                "enum": [0, 1],
+                "errorMessage": "Status parameter must be either '0' (Normal) or '1' (Tumor)",
+                "meta": ["status"]
+            },
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
+                "meta": ["sample"]
             },
-            "fastq_1": {
+            "sex": {
+                "type": "string",
+                "description": "The patient's sex",
+                "enum": ["MALE", "FEMALE", "UNKNOWN"],
+                "default": "UNKNOWN",
+                "meta": ["sex"]
+            },
+            "tumor_site": {
+                "type": "integer",
+                "description": "Primary tumor type/site code used for site-specific interpretation.",
+                "minimum": 0,
+                "maximum": 30,
+                "errorMessage": "Tumor site must be specified in PCGR's numeric encoding, see https://sigven.github.io/pcgr/articles/running.html#tumor-site",
+                "default": 0,
+                "meta": ["tumor_site"]
+            },
+            "tumor_purity": {
+                "type": "number",
+                "description": "Estimated tumor purity.",
+                "minimum": 0,
+                "maximum": 1,
+                "meta": ["tumor_purity"]
+            },
+            "tumor_ploidy": {
+                "type": "number",
+                "description": "Estimated tumor ploidy",
+                "exclusiveMinimum": 0,
+                "meta": ["tumor_ploidy"]
+            },
+            "vcf": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.vcf(\\.gz)?$",
+                "errorMessage": "VCF file must be provided, cannot contain spaces and must have extension '.vcf' or '.vcf.gz'"
             },
-            "fastq_2": {
+            "cna": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.(cns|txt)$",
+                "errorMessage": "CNA file cannot contain spaces and must have extension '.cns'"
             }
         },
-        "required": ["sample", "fastq_1"]
+
+        "required": ["patient", "status", "sample", "vcf"],
+        "allOf": [
+            {
+                "if": { "properties": { "status": { "const": 0 } } },
+                "then": {
+                    "$comment": "extra constraints for GERMLINE analysis: illegal columns",
+                    "properties": {
+                        "tumor_site": false,
+                        "tumor_purity": false,
+                        "tumor_ploidy": false
+                    }
+                }
+            }
+        ]
     }
 }

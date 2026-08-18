@@ -1,0 +1,59 @@
+nextflow_workflow {
+
+    name "Test Subworkflow PREPARE_SOMATIC"
+    script "../main.nf"
+    workflow "PREPARE_SOMATIC"
+
+    tag "subworkflows"
+    tag "subworkflows_"
+    tag "subworkflows/prepare_somatic"
+    tag "reformat/vcf"
+    tag "reformat/cna"
+    tag "intersect/vcf"
+    tag "pcgr/preparevcf"
+    tag "ci_test"
+
+    test("human - vcf,cna") {
+
+        when {
+            workflow {
+                """
+                params.cna_analysis = true
+                input[0] = channel.of(
+                    [
+                        [id:'HCC1395.HCC1395T.mutect2', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site:0, tumor_purity:0.6, tumor_ploidy:1, tool:'mutect2'],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz.tbi', checkIfExists: true)
+                    ],
+                    [
+                        [id:'HCC1395.HCC1395T.strelka_snv', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site:0, tumor_purity:0.6, tumor_ploidy:1, tool:'strelka_snv'],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.strelka.somatic_snvs_chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.strelka.somatic_snvs_chr22.vcf.gz.tbi', checkIfExists: true)
+                    ],
+                    [
+                        [id:'HCC1395.HCC1395T.strelka_indel', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site:0, tumor_purity:0.6, tumor_ploidy:1, tool:'strelka_indel'],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.strelka.somatic_indels_chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.strelka.somatic_indels_chr22.vcf.gz.tbi', checkIfExists: true)
+                    ]
+                )
+                input[1] = channel.of(
+                    [
+                        [patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site:0, tumor_purity:0.6, tumor_ploidy:1],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.segments_chr22.txt', checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.pcgr_ready_vcf.get(0).get(1)).getName() + ":md5," + path(file(workflow.out.pcgr_ready_vcf.get(0).get(1)).toString()).vcf.variantsMD5,
+                    file(workflow.out.pcgr_ready_vcf.get(0).get(2)).name,
+                    file(workflow.out.pcgr_ready_vcf.get(0).get(3)).name + ":md5," + path(file(workflow.out.pcgr_ready_vcf.get(0).get(3)).toString()).md5
+                    ).match() }
+            )
+        }
+    }
+}

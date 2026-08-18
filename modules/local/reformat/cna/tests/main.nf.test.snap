@@ -1,0 +1,59 @@
+{
+    "human - cna": {
+        "content": [
+            {
+                "cna": [
+                    [
+                        {
+                            "id": "HCC1395.HCC1395T",
+                            "patient": "HCC1395",
+                            "sample": "HCC1395T",
+                            "status": "somatic"
+                        },
+                        "HCC1395T.reformatted.allelic_cna.tsv:md5,17d7fc79d8e60ac5f9b3dc007c33b97d"
+                    ]
+                ],
+                "versions_numpy": [
+                    [
+                        "REFORMAT_CNA",
+                        "numpy",
+                        "2.2.6"
+                    ]
+                ],
+                "versions_pandas": [
+                    [
+                        "REFORMAT_CNA",
+                        "pandas",
+                        "2.3.3"
+                    ]
+                ],
+                "versions_pysam": [
+                    [
+                        "REFORMAT_CNA",
+                        "pysam",
+                        "0.23.3"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "REFORMAT_CNA",
+                        "python",
+                        "3.10.19"
+                    ]
+                ],
+                "versions_vcf2tsvpy": [
+                    [
+                        "REFORMAT_CNA",
+                        "vcf2tsvpy",
+                        "0.6.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T11:52:02.282385"
+    }
+}

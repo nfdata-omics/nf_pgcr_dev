@@ -1,0 +1,45 @@
+def projectDir = new File('.').absolutePath
+nextflow_process {
+
+    name "Test Process PCGR_PREPAREVCF"
+    script "../main.nf"
+    process "PCGR_PREPAREVCF"
+
+    tag "modules"
+    tag "pcgr/preparevcf"
+    tag "ci_test"
+
+    test("human - vcf.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T'],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T_keys.txt", checkIfExists: true),
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.mutect2.reformatted.vcf.gz", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.strelka_indel.reformatted.vcf.gz", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.strelka_snv.reformatted.vcf.gz", checkIfExists: true)
+                    ],
+                    [
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.mutect2.reformatted.vcf.gz.tbi", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.strelka_indel.reformatted.vcf.gz.tbi", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395.HCC1395T.strelka_snv.reformatted.vcf.gz.tbi", checkIfExists: true)
+                    ]
+                ]
+                input[1] = "${projectDir}/bin/pcgr_header.txt"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+            )
+        }
+
+    }
+
+}

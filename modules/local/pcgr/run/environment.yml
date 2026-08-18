@@ -1,0 +1,7 @@
+channels:
+  - pcgr
+  - conda-forge
+  - bioconda
+dependencies:
+  - pcgr::pcgr=2.2.5
+  - pcgr::r-pcgrr=2.2.5

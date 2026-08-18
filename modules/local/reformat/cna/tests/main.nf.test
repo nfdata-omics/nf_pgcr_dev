@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process REFORMAT_CNA"
+    script "../main.nf"
+    process "REFORMAT_CNA"
+
+    tag "modules"
+    tag "reformat/cna"
+    tag "ci_test"
+
+    test("human - cna") {
+
+        when {
+            process {
+                """
+                params.cna_analysis = true
+                input[0] = [
+                    [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic'],
+                    file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.segments_chr22.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

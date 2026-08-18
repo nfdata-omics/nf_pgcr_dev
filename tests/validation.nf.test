@@ -1,0 +1,70 @@
+def projectDir = new File('.').absolutePath
+def testDataDir = "https://github.com/nf-core/test-datasets/raw/refs/heads/variantprioritization"
+
+nextflow_pipeline {
+
+    name "Test input validation"
+    script "../main.nf"
+    tag "pipeline"
+    tag "ci_test"
+
+    def test_scenario = [
+        [
+            name: "Duplicated germline sample IDs (invalid)",
+            params: [
+                input: "${testDataDir}/samplesheets/validation/duplicated_germline.csv"
+            ],
+            failure: true,
+            snapshot: 'stderr,stdout',
+            snapshot_ignore: 'Downloading plugin',
+            snapshot_include: 'Duplicate germline'
+        ],
+        [
+            name: "Germline row with tumor columns (invalid)",
+            params: [
+                input: "${testDataDir}/samplesheets/validation/germline_with_all_tumor_cols.csv"
+            ],
+            failure: true,
+            snapshot: 'stderr,stdout',
+            snapshot_ignore: 'Downloading plugin',
+            snapshot_include: 'False schema always fails',
+        ],
+        [
+            name: "Somatic row with all optional fields (valid)",
+            params: [
+                input: "${testDataDir}/samplesheets/validation/somatic_valid_all_fields.csv",
+                cna_analysis: true,
+                pcgr_database_dir: "${testDataDir}/reference/dummy/pcgr_db.tar.gz",
+                vep_cache: "${testDataDir}/reference/dummy/vep_cache.tar.gz",
+                igenomes_base: "${testDataDir}/reference/dummy/igenomes"
+            ],
+            stub: true,
+            // we need to ignore some nf-tools warnings until this bug is resolved: https://github.com/nf-core/modules/issues/9573
+            snapshot_ignoreWarning: [
+                "nf-core pipelines do not accept positional arguments",
+                "A common mistake is to provide multiple values separated by spaces"
+                ],
+        ],
+        [
+            name: "Somatic/Germline mosaic: multi samples with different optional fields (valid)",
+            params: [
+                input: "${testDataDir}/samplesheets/validation/germline-somatic_valid_mosaic.csv",
+                cna_analysis: false,
+                pcgr_database_dir: "${testDataDir}/reference/dummy/pcgr_db.tar.gz",
+                vep_cache: "${testDataDir}/reference/dummy/vep_cache.tar.gz",
+                igenomes_base: "${testDataDir}/reference/dummy/igenomes"
+            ],
+            stub: true,
+            // we need to ignore some nf-tools warnings until this bug is resolved: https://github.com/nf-core/modules/issues/9573
+            snapshot_ignoreWarning: [
+                "nf-core pipelines do not accept positional arguments",
+                "A common mistake is to provide multiple values separated by spaces"
+                ],
+        ]
+    ]
+
+    // Generate tests for each scenario
+    test_scenario.each { scenario ->
+        test(scenario.name, UTILS.get_test(scenario))
+    }
+}

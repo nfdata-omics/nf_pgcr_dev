@@ -6,61 +6,97 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+nf-core/variantprioritization processes small variant calls (SNVs and InDels) provided in VCF format, with optional copy number alteration (CNA) segments. It generates annotated reports using PCGR for somatic analyses and CPSR for germline analyses.
+
+It is designed to work seamlessly with nf-core/sarek outputs, but also supports VCF files generated independently of Sarek. Supported variant callers include Mutect2 and Strelka for somatic variants, ASCAT for copy numbers calls and DeepVariant or HaplotypeCaller for germline variants.
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline.
+Use the `--input` parameter to specify its location.
+
+It must be a comma-separated file with a header row and the following required columns:
+
+- `patient`: Patient / subject identifier (no spaces)
+- `status`: `0` = normal / germline, `1` = tumor / somatic
+- `sample`: Sample identifier (no spaces)
+- `vcf`: Path to a VCF / VCF.GZ file
+
+The PCGR / CPSR implementation runs based on the input: If the samplesheet contains both status `0` and `1`, both reporting tools will be used.
+
+Optionally (somatic analysis only), you can provide:
+
+- `cna`: Path to a CNA segments file (required for somatic rows when `--cna_analysis` is enabled)
+- `sex`: the patients sex: `MALE`, `FEAMLE`, `UNKNOWN` (default)
+- `tumor_site`: the patiens primary tumor site. Use PCGRs numeric codes (see [PCGR docs](https://sigven.github.io/pcgr/articles/running.html#tumor-site) for details). As Tier 1 variants require a tumor site match, PCGR will not find Tier 1 variants if you do not specify a tumor site.
+- `tumor_ploidy`: estimated tumor ploidy.
+- `tumor_purity`: estimated tumor purity.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
+### Multiple VCFs per sample
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+If you have multiple VCFs for the same sample (e.g. one per caller), provide one row per VCF. The pipeline will keep caller-specific files separate during preprocessing and then consolidate/intersect somatic calls per sample for PCGR reporting.
 
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+> [!NOTE]
+> Intersection of calls is only implemented for the somatic reporting. For germline calls please provide unique sample ids.
+
+### CNA files
+
+If you run with `--cna_analysis`, CNA segments are required for somatic (`status=1`) rows.
+The CNA file is expected to be ASCAT-like and will be reformatted into the allele-specific schema required by PCGR.
+
+### Caller detection
+
+The pipeline extracts the variant caller from the VCF header. Make sure to use VCFs that hold this information.
+
+### Example samplesheet
+
+The workflow accepts as input a `samplesheet.csv` file containing the paths to SNV/InDel VCF files and `ASCAT` copy number aberation files. We have efforted to mimic the [samplesheet specifications of nf-core/sarek](https://github.com/nf-core/sarek/blob/master/docs/usage.md#input-sample-sheet-configurations) for ease of use:
+
+| Column  | Description                                                                                                          |
+| ------- | :------------------------------------------------------------------------------------------------------------------- |
+| patient | Designates the patient/subject; must be unique for each patient, but one patient can have multiple samples           |
+| status  | Normal/tumor (0/1) status of sample                                                                                  |
+| sample  | Designates the sample ID; must be unique. A patient may have multiple samples e.g a paired tumor-normal, tumor-only. |
+| vcf     | Full path to VCF file(s)                                                                                             |
+| cna     | Full path to segment file                                                                                            |
+
+An example of a valid samplesheet is given below:
+
+```csv
+patient,status,sample,vcf,cna
+HCC1395,1,HCC1395T,HCC1395T_vs_HCC1395N.mutect2.vcf.gz,HCC1395T.segments.txt
+HCC1395,1,HCC1395T,HCC1395T_vs_HCC1395N.freebayes.vcf.gz,HCC1395T.segments.txt
+HCC1395,1,HCC1395T,HCC1395T_vs_HCC1395N.strelka.somatic_snvs.vcf.gz,HCC1395T.segments.txt
+HCC1395,1,HCC1395T,HCC1395T_vs_HCC1395N.strelka.somatic_indels.vcf.gz,HCC1395T.segments.txt
+HCC1395,0,HCC1395N,HCC1395N.deepvariant.vcf.gz,
+HCC1395,0,HCC1395N,HCC1395N.haplotypecaller.vcf.gz,
+HCC1396,1,HCC1396T,HCC1396T_vs_HCC1396N.mutect2.vcf.gz,
+HCC1396,1,HCC1396T,HCC1396T_vs_HCC1396N.strelka.somatic_snvs.vcf.gz,
+HCC1396,1,HCC1396T,HCC1396T_vs_HCC1396N.strelka.somatic_indels.vcf.gz,
 ```
 
-### Full samplesheet
+An example samplesheet is provided in `assets/samplesheet.csv`.
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
-
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
-```
-
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-
-An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+> copy number aberation files must be present for every sample entry when `--cna_analysis true`.
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/variantprioritization --input ./samplesheet.csv --outdir ./results --genome GRCh37 -profile docker
+nextflow run nf-core/variantprioritization \
+  -profile <docker/singularity/.../institute> \
+  --input ./samplesheet.csv \
+  --outdir ./results \
+  --genome GRCh38
 ```
 
-This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
+> [!WARNING]
+> `-profile conda` is not working with the CPSR and PCGR modules at the moment. We are working on a fix and hope to enable it in a future release.
 
 Note that the pipeline will create the following files in your working directory:
 
@@ -73,27 +109,10 @@ work                # Directory containing the nextflow working files
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
-Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
-
 > [!WARNING]
 > Do not use `-c <file>` to specify parameters as this will result in errors. Custom config files specified with `-c` must only be used for [tuning process resource specifications](https://nf-co.re/docs/running/run-pipelines#configuring-pipelines), other infrastructural tweaks (such as output directories), or module arguments (args).
 
-The above pipeline run specified with a params file in yaml format:
-
-```bash
-nextflow run nf-core/variantprioritization -profile docker -params-file params.yaml
-```
-
-with:
-
-```yaml title="params.yaml"
-input: './samplesheet.csv'
-outdir: './results/'
-genome: 'GRCh37'
-<...>
-```
-
-You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
+For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/variantprioritization/usage) and the [parameter documentation](https://nf-co.re/variantprioritization/parameters).
 
 ### Updating the pipeline
 
@@ -115,6 +134,38 @@ To further assist in reproducibility, you can use share and reuse [parameter fil
 
 > [!TIP]
 > If you wish to share such profile (such as upload as supplementary material for academic publications), make sure to NOT include cluster specific paths to files, nor institutional specific profiles.
+
+## Variant consolidation
+
+Somatic variants called by multiple tools are reformatted to match `PCGR` specifications making them easily searchable in the HTML ouput.
+
+Tumor sample depth (`TDP`), allele frequency (`TAF`) and allelic depths for the ref and alt (`ADT`) are manually calculated and when applicable, applied to the normal sample (`NDP`, `NAF`, `ADN`):
+
+```console
+HCC1395T_vs_HCC1395N.mutect2.vcf.gz
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  HCC1395_HCC1395N        HCC1395_HCC1395T
+chr1    1212740 .       A       C       .       PASS    AS_SB_TABLE=63,80|49,76;DP=282;ECNT=1;MBQ=20,20;MFRL=151,154;MMQ=60,60;MPOS=30;NALOD=1.94;NLOD=25.89;POPAF=6.00;TLOD=341.76     GT:AD:AF:DP:F1R2:F2R1:FAD:SB 0/0:143,0:0.011:143:36,0:36,0:86,0:63,80,0,0    0/1:0,125:0.988:125:0,28:0,37:0,78:0,0,49,76
+```
+
+```console
+TDP=125;NDP=143;TAF=0.988;NAF=0.011;ADT=0,125;ADN=143,0;TAL=mutect2
+```
+
+```console
+HCC1395T_vs_HCC1395N.strelka.somatic_snvs.vcf.gz
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NORMAL  TUMOR
+chr1    1212740 .       A       C       .       PASS    DP=271;MQ=60.00;MQ0=0;NT=ref;QSS=790;QSS_NT=3070;ReadPosRankSum=0.00;SGT=AA->AC;SNVSB=0.00;SOMATIC;SomaticEVS=19.73;TQSS=1;TQSS_NT=1    DP:FDP:SDP:SUBDP:AU:CU:GU:TU 145:0:0:0:145,145:0,0:0,0:0,0   126:0:0:0:0,0:126,126:0,0:0,0
+```
+
+```console
+TDP=126;NDP=145;TAF=1;NAF=0;ADT=0,126;ADN=145,0;TAL=strelka
+```
+
+Finally, the maximum values for `TAF`, `TDP`, `NAF`, `NDP`, `ADT`, `ADN` are taken as outputs for the consolidate variant call. In addition, values present in the `ID` and `QUAL` column (i.e not `'.'`) are reported if present in any of the original calls:
+
+```console
+1       1212740 .       A       C       3793.8  PASS    NDP=145;NAF=0.011;TDP=126;TAF=1;TAL=mutect2,strelka
+```
 
 ## Core Nextflow arguments
 

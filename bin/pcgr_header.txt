@@ -1,0 +1,15 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowDepth,Description="Tumor or normal sample read depth at this locus is below 2">
+##FILTER=<ID=LowEVS,Description="Somatic Empirical Variant Score (SomaticEVS) is below threshold">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=DPT,Number=1,Type=Integer,Description="Sequencing depth at variant position (tumor)">
+##FORMAT=<ID=DPN,Number=1,Type=Integer,Description="Sequencing depth at variant position (normal)">
+##FORMAT=<ID=ADT,Number=.,Type=String,Description="Allelic depths for the ref and alt alleles in the order listed (tumor)">
+##FORMAT=<ID=ADN,Number=.,Type=String,Description="Allelic depths for the ref and alt alleles in the order listed (normal)">
+##FORMAT=<ID=AL,Number=.,Type=Integer,Description="Codes for algorithms that produced the somatic call (1 = freebayes, 2 = mutect2, 3 = strelka)">
+##INFO=<ID=TDP,Number=1,Type=Integer,Description="Tumor sample depth">
+##INFO=<ID=NDP,Number=1,Type=Integer,Description="Normal sample depth">
+##INFO=<ID=TAF,Number=1,Type=Float,Description="Tumor sample AF">
+##INFO=<ID=NAF,Number=1,Type=Float,Description="Normal sample AF">
+##INFO=<ID=TAL,Number=.,Type=String,Description="Algorithms that called the somatic mutation">

@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "input_preprocessing"
+description: Preprocess input VCF files by bgzipping/tabix indexing if needed, then normalize and filter variants; pass CNA files through for downstream processing
+keywords:
+  - vcf
+  - cna
+  - preprocessing
+  - normalization
+  - filtering
+components:
+  - bcftools/filter
+  - bcftools/norm
+  - htslib/bgziptabix
+input:
+  - ch_samplesheet:
+      type: map
+      description: |
+        Channel of sample tuples containing metadata and file paths.
+        Structure: [ val(meta), path(vcf), path(tbi), path(cna) ]
+  - fasta:
+      type: file
+      description: |
+        Reference genome FASTA used by variant normalization.
+        Structure: [ path(fasta) ]
+
+output:
+  - normalised_germline:
+      type: file
+      description: |
+        Channel of normalized and filtered germline VCFs with their indexes.
+        Structure: [ val(meta), path(vcf.gz), path(vcf.gz.tbi) ]
+      pattern: "*"
+  - normalised_somatic:
+      type: file
+      description: |
+        Channel of normalized and filtered somatic VCFs with their indexes.
+        Structure: [ val(meta), path(vcf.gz), path(vcf.gz.tbi) ]
+      pattern: "*"
+  - ch_cna_files:
+      type: file
+      description: |
+        Channel of CNA files with simplified metadata.
+        Structure: [ val(meta), path(cna) ]
+      pattern: "*"
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

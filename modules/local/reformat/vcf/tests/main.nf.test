@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process REFORMAT_VCF"
+    script "../main.nf"
+    process "REFORMAT_VCF"
+
+    tag "modules"
+    tag "reformat/vcf"
+    tag "ci_test"
+
+    test("human - [vcf, tbi]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', tool:'mutect2'],
+                    file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz', checkIfExists: true),
+                    file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz.tbi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    file(process.out.tbi.get(0).get(1)).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    ).match() }
+            )
+        }
+    }
+}

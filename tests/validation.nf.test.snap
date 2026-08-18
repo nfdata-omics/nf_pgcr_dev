@@ -1,0 +1,257 @@
+{
+    "Somatic row with all optional fields (valid)": {
+        "content": [
+            11,
+            {
+                "BCFTOOLS_FILTER": {
+                    "bcftools": "1.23.1"
+                },
+                "BCFTOOLS_NORM": {
+                    "bcftools": "1.23.1"
+                },
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": 1.24,
+                    "xz": "5.8.3"
+                },
+                "INTERSECT_VCF": {
+                    "bcftools": "1.23.1",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19"
+                },
+                "PCGR_PREPAREVCF": {
+                    "numpy": "2.2.6",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19",
+                    "vcf2tsvpy": "0.6.1"
+                },
+                "PCGR_RUN": {
+                    "pcgr": "2.2.5"
+                },
+                "REFORMAT_CNA": {
+                    "numpy": "2.2.6",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19",
+                    "vcf2tsvpy": "0.6.1"
+                },
+                "REFORMAT_VCF": {
+                    "bcftools": "1.23.1",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19"
+                },
+                "UNTAR_PCGR_DB": {
+                    "untar": 1.34
+                },
+                "UNTAR_VEP_CACHE": {
+                    "untar": 1.34
+                }
+            },
+            [
+                "bcftools",
+                "bcftools/filter",
+                "bcftools/filter/test.test.strelka_snv.norm.filtered.vcf.gz",
+                "bcftools/filter/test.test.strelka_snv.norm.filtered.vcf.gz.tbi",
+                "bcftools/norm",
+                "bcftools/norm/test.test.strelka_snv.norm.vcf.gz",
+                "bcftools/norm/test.test.strelka_snv.norm.vcf.gz.tbi",
+                "custom",
+                "custom/intersect_vcf",
+                "custom/intersect_vcf/test.test_keys.txt",
+                "custom/pcgr_ready_vcf",
+                "custom/pcgr_ready_vcf/test.test.vcf.gz",
+                "custom/pcgr_ready_vcf/test.test.vcf.gz.tbi",
+                "custom/reformat",
+                "custom/reformat/test.reformatted.allelic_cna.tsv",
+                "custom/reformat/test.test.strelka_snv.reformatted.vcf.gz",
+                "custom/reformat/test.test.strelka_snv.reformatted.vcf.gz.tbi",
+                "htslib",
+                "htslib/test.test.strelka_snv.vcf.gz",
+                "htslib/test.test.strelka_snv.vcf.gz.tbi",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/.stub",
+                "multiqc/multiqc_plots",
+                "multiqc/multiqc_plots/.stub",
+                "multiqc/multiqc_report.html",
+                "pcgr",
+                "pcgr/test.test",
+                "pipeline_info",
+                "pipeline_info/nf_core_variantprioritization_software_mqc_versions.yml",
+                "reference"
+            ],
+            "No warnings"
+        ],
+        "timestamp": "2026-07-14T18:45:05.002882682",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
+    },
+    "Duplicated germline sample IDs (invalid)": {
+        "content": [
+            0,
+            {
+                
+            },
+            [
+                "pipeline_info"
+            ],
+            "No stable content",
+            "No VCF files",
+            "No warnings",
+            [
+                "Duplicate germline sample IDs found: HCC1395.HCC1395N. Intersection of calls is only implemented for somatic reporting. For germline calls, please provide unique sample IDs."
+            ]
+        ],
+        "timestamp": "2026-07-03T16:29:55.909641678",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "Germline row with tumor columns (invalid)": {
+        "content": [
+            0,
+            {
+                
+            },
+            [
+                "pipeline_info"
+            ],
+            "No stable content",
+            "No VCF files",
+            "No warnings",
+            [
+                "\t-> Entry 1: Error for field 'tumor_purity' (0.5): False schema always fails",
+                "\t-> Entry 1: Error for field 'tumor_ploidy' (2): False schema always fails",
+                "\t-> Entry 1: Error for field 'tumor_site' (5): False schema always fails"
+            ]
+        ],
+        "timestamp": "2026-07-05T23:50:38.193448217",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
+    },
+    "Somatic/Germline mosaic: multi samples with different optional fields (valid)": {
+        "content": [
+            28,
+            {
+                "BCFTOOLS_FILTER": {
+                    "bcftools": "1.23.1"
+                },
+                "BCFTOOLS_NORM": {
+                    "bcftools": "1.23.1"
+                },
+                "CPSR_RUN": {
+                    "cpsr": "2.2.5"
+                },
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": 1.24,
+                    "xz": "5.8.3"
+                },
+                "INTERSECT_VCF": {
+                    "bcftools": "1.23.1",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19"
+                },
+                "PCGR_PREPAREVCF": {
+                    "numpy": "2.2.6",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19",
+                    "vcf2tsvpy": "0.6.1"
+                },
+                "PCGR_RUN": {
+                    "pcgr": "2.2.5"
+                },
+                "REFORMAT_VCF": {
+                    "bcftools": "1.23.1",
+                    "pandas": "2.3.3",
+                    "pysam": "0.23.3",
+                    "python": "3.10.19"
+                },
+                "UNTAR_PCGR_DB": {
+                    "untar": 1.34
+                },
+                "UNTAR_VEP_CACHE": {
+                    "untar": 1.34
+                }
+            },
+            [
+                "bcftools",
+                "bcftools/filter",
+                "bcftools/filter/testA.test.strelka_snv.norm.filtered.vcf.gz",
+                "bcftools/filter/testA.test.strelka_snv.norm.filtered.vcf.gz.tbi",
+                "bcftools/filter/testB.test.strelka_snv.norm.filtered.vcf.gz",
+                "bcftools/filter/testB.test.strelka_snv.norm.filtered.vcf.gz.tbi",
+                "bcftools/filter/testC.test.strelka_snv.norm.filtered.vcf.gz",
+                "bcftools/filter/testC.test.strelka_snv.norm.filtered.vcf.gz.tbi",
+                "bcftools/filter/testD.test.strelka_snv.norm.filtered.vcf.gz",
+                "bcftools/filter/testD.test.strelka_snv.norm.filtered.vcf.gz.tbi",
+                "bcftools/norm",
+                "bcftools/norm/testA.test.strelka_snv.norm.vcf.gz",
+                "bcftools/norm/testA.test.strelka_snv.norm.vcf.gz.tbi",
+                "bcftools/norm/testB.test.strelka_snv.norm.vcf.gz",
+                "bcftools/norm/testB.test.strelka_snv.norm.vcf.gz.tbi",
+                "bcftools/norm/testC.test.strelka_snv.norm.vcf.gz",
+                "bcftools/norm/testC.test.strelka_snv.norm.vcf.gz.tbi",
+                "bcftools/norm/testD.test.strelka_snv.norm.vcf.gz",
+                "bcftools/norm/testD.test.strelka_snv.norm.vcf.gz.tbi",
+                "cpsr",
+                "cpsr/testD.test",
+                "custom",
+                "custom/intersect_vcf",
+                "custom/intersect_vcf/testA.test_keys.txt",
+                "custom/intersect_vcf/testB.test_keys.txt",
+                "custom/intersect_vcf/testC.test_keys.txt",
+                "custom/pcgr_ready_vcf",
+                "custom/pcgr_ready_vcf/testA.test.vcf.gz",
+                "custom/pcgr_ready_vcf/testA.test.vcf.gz.tbi",
+                "custom/pcgr_ready_vcf/testB.test.vcf.gz",
+                "custom/pcgr_ready_vcf/testB.test.vcf.gz.tbi",
+                "custom/pcgr_ready_vcf/testC.test.vcf.gz",
+                "custom/pcgr_ready_vcf/testC.test.vcf.gz.tbi",
+                "custom/reformat",
+                "custom/reformat/testA.test.strelka_snv.reformatted.vcf.gz",
+                "custom/reformat/testA.test.strelka_snv.reformatted.vcf.gz.tbi",
+                "custom/reformat/testB.test.strelka_snv.reformatted.vcf.gz",
+                "custom/reformat/testB.test.strelka_snv.reformatted.vcf.gz.tbi",
+                "custom/reformat/testC.test.strelka_snv.reformatted.vcf.gz",
+                "custom/reformat/testC.test.strelka_snv.reformatted.vcf.gz.tbi",
+                "htslib",
+                "htslib/testA.test.strelka_snv.vcf.gz",
+                "htslib/testA.test.strelka_snv.vcf.gz.tbi",
+                "htslib/testB.test.strelka_snv.vcf.gz",
+                "htslib/testB.test.strelka_snv.vcf.gz.tbi",
+                "htslib/testC.test.strelka_snv.vcf.gz",
+                "htslib/testC.test.strelka_snv.vcf.gz.tbi",
+                "htslib/testD.test.strelka_snv.vcf.gz",
+                "htslib/testD.test.strelka_snv.vcf.gz.tbi",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/.stub",
+                "multiqc/multiqc_plots",
+                "multiqc/multiqc_plots/.stub",
+                "multiqc/multiqc_report.html",
+                "pcgr",
+                "pcgr/testA.test",
+                "pcgr/testB.test",
+                "pcgr/testC.test",
+                "pipeline_info",
+                "pipeline_info/nf_core_variantprioritization_software_mqc_versions.yml",
+                "reference"
+            ],
+            "No warnings"
+        ],
+        "timestamp": "2026-07-14T18:45:56.428245108",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.2"
+        }
+    }
+}

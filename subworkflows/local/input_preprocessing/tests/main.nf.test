@@ -1,0 +1,94 @@
+def projectDir = new File('.').absolutePath
+
+nextflow_workflow {
+
+    name "Test Subworkflow INPUT_PREPROCESSING"
+    script "../main.nf"
+    workflow "INPUT_PREPROCESSING"
+
+    tag "subworkflows"
+    tag "subworkflows_"
+    tag "subworkflows/input_preprocessing"
+    tag "bcftools/filter"
+    tag "bcftools/norm"
+    tag "htslib/bgziptabix"
+    tag "ci_test"
+
+    test("human - single - [vcf,[],cna]") {
+        when {
+            workflow {
+                """
+                params.cna_analysis = true
+                input[0] = channel.of(
+                    [
+                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'MALE', tumor_site: null, tumor_purity: null, tumor_ploidy: null],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf', checkIfExists: true),
+                        [],
+                        file(params.pipelines_testdata_base_path + 'module_data/preparevcf/HCC1395T.reformatted.allelic_cna.tsv', checkIfExists: true)
+                    ]
+                )
+                input[1] = channel
+                    .fromPath(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/chr22_23800000-23980000.fa', checkIfExists: true)
+                    .map { it -> [[id: it.baseName], it] }
+                    .collect()
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.normalised_somatic.get(0).get(1)).getName() + ":md5," + path(file(workflow.out.normalised_somatic.get(0).get(1)).toString()).vcf.variantsMD5,
+                    file(workflow.out.normalised_somatic.get(0).get(2)).name,
+                    workflow.out.ch_cna_files.get(0).get(1)
+                    ).match() }
+            )
+        }
+    }
+
+    test("human - multi - [vcf.gz,tbi,[]]") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [id:'HCC1395.HCC1395T', patient:'HCC1395', sample:'HCC1395T', status:'somatic', sex:'FEMALE', tumor_site: 4, tumor_purity: 0.7, tumor_ploidy: 1.2],
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data/HCC1395T_vs_HCC1395N.mutect2.filtered_chr22.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id:'NA12878.deepvariant', patient:'NA12878', sample:'deepvariant_calls', status:'germline', sex:'UNKNOWN', tool:'deepvariant', tumor_site: null, tumor_purity: null, tumor_ploidy: null],
+                        file(params.pipelines_testdata_base_path + 'test_data_cpsr/NA12878.deepvariant.chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data_cpsr/NA12878.deepvariant.chr22.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id:'NA12878.haplotypecaller', patient:'NA12878', sample:'haplotypecaller_calls', status:'germline', sex:'UNKNOWN', tool:'haplotypecaller', tumor_site: null, tumor_purity: 0.5, tumor_ploidy: null],
+                        file(params.pipelines_testdata_base_path + 'test_data_cpsr/NA12878.haplotypecaller.chr22.vcf.gz', checkIfExists: true),
+                        file(params.pipelines_testdata_base_path + 'test_data_cpsr/NA12878.haplotypecaller.chr22.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ]
+                )
+                input[1] = channel
+                    .fromPath(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/chr22_23800000-23980000.fa', checkIfExists: true)
+                    .map { it -> [[id: it.baseName], it] }
+                    .collect()
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    file(workflow.out.normalised_germline.get(0).get(1)).getName() + ":md5," + path(file(workflow.out.normalised_germline.get(0).get(1)).toString()).vcf.variantsMD5,
+                    file(workflow.out.normalised_germline.get(0).get(2)).name,
+                    file(workflow.out.normalised_germline.get(1).get(1)).getName() + ":md5," + path(file(workflow.out.normalised_germline.get(1).get(1)).toString()).vcf.variantsMD5,
+                    file(workflow.out.normalised_germline.get(1).get(2)).name,
+                    file(workflow.out.normalised_somatic.get(0).get(1)).getName() + ":md5," + path(file(workflow.out.normalised_somatic.get(0).get(1)).toString()).vcf.variantsMD5,
+                    file(workflow.out.normalised_somatic.get(0).get(2)).name,
+                    ).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,103 @@
+name: reformat_vcf
+description: Reformat caller-specific somatic VCF input into harmonized VCF suitable for downstream aggregation and PCGR preparation
+keywords:
+  - vcf
+  - somatic
+  - reformat
+  - strelka
+  - mutect2
+  - freebayes
+tools:
+  - reformat_vcf.py:
+      description: |
+        Local helper script that normalizes INFO/FORMAT fields across somatic callers,
+        writes a bgzipped VCF when requested, and creates a tabix index for gzipped output.
+      documentation: https://github.com/nf-core/variantprioritization
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample and caller information
+          e.g. [ id:'patient.sample.tool', patient:'patient', sample:'sample', tool:'mutect2' ]
+    - vcf:
+        type: file
+        description: Input VCF file to reformat
+        pattern: "*.{vcf,vcf.gz}"
+    - tbi:
+        type: file
+        description: Tabix index for compressed input VCF (passed through module input)
+        pattern: "*.tbi"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz":
+          type: file
+          description: Reformatted bgzipped VCF
+          pattern: "*.vcf.gz"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for reformatted bgzipped VCF (optional when output is not gzipped)
+          pattern: "*.vcf.gz.tbi"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to obtain the version
+  versions_pandas:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pandas:
+          type: string
+          description: The tool name
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pysam:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pysam:
+          type: string
+          description: The tool name
+      - "python -c 'import pysam; print(pysam.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - python:
+          type: string
+          description: The tool name
+      - "python --version | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - tool:
+          type: string
+          description: Tool name
+      - version:
+          type: string
+          description: Reported tool version
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

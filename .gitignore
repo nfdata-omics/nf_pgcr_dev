@@ -8,3 +8,10 @@ testing*
 *.pyc
 null/
 .lineage/
+projects/
+.nf-test
+.nf-test*
+reference/*
+**/*.fa
+modules/nf-core/**/tests/
+subworkflows/nf-core/**/tests/

@@ -1,0 +1,108 @@
+{
+    "human - single - vcf.gz": {
+        "content": [
+            {
+                "variant_tool_map": [
+                    [
+                        {
+                            "id": "HCC1395.HCC1395T",
+                            "patient": "HCC1395",
+                            "sample": "HCC1395T",
+                            "tools": [
+                                "mutect2"
+                            ]
+                        },
+                        "HCC1395.HCC1395T_keys.txt:md5,37bc7fff29553d6b544f1f25c72bbdf7"
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "INTERSECT_VCF",
+                        "bcftools",
+                        "1.23.1"
+                    ]
+                ],
+                "versions_pandas": [
+                    [
+                        "INTERSECT_VCF",
+                        "pandas",
+                        "2.3.3"
+                    ]
+                ],
+                "versions_pysam": [
+                    [
+                        "INTERSECT_VCF",
+                        "pysam",
+                        "0.23.3"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "INTERSECT_VCF",
+                        "python",
+                        "3.10.19"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T14:48:29.89561"
+    },
+    "human - multiple - vcf.gz": {
+        "content": [
+            {
+                "variant_tool_map": [
+                    [
+                        {
+                            "id": "HCC1395.HCC1395T",
+                            "patient": "HCC1395",
+                            "sample": "HCC1395T",
+                            "tools": [
+                                "mutect2",
+                                "strelka",
+                                "strelka"
+                            ]
+                        },
+                        "HCC1395.HCC1395T_keys.txt:md5,48416a5b08a9baff4eced54f1a97bc15"
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "INTERSECT_VCF",
+                        "bcftools",
+                        "1.23.1"
+                    ]
+                ],
+                "versions_pandas": [
+                    [
+                        "INTERSECT_VCF",
+                        "pandas",
+                        "2.3.3"
+                    ]
+                ],
+                "versions_pysam": [
+                    [
+                        "INTERSECT_VCF",
+                        "pysam",
+                        "0.23.3"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "INTERSECT_VCF",
+                        "python",
+                        "3.10.19"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-03-16T17:08:56.996555913"
+    }
+}

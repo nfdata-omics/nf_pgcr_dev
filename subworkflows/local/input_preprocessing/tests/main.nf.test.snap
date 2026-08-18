@@ -1,0 +1,29 @@
+{
+    "human - single - [vcf,[],cna]": {
+        "content": [
+            "HCC1395.HCC1395T.norm.filtered.vcf.gz:md5,5c3ec863c8997ca460cc114885f804c4",
+            "HCC1395.HCC1395T.norm.filtered.vcf.gz.tbi",
+            "/nf-core/test-datasets/variantprioritization/module_data/preparevcf/HCC1395T.reformatted.allelic_cna.tsv"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T16:06:38.818809"
+    },
+    "human - multi - [vcf.gz,tbi,[]]": {
+        "content": [
+            "NA12878.deepvariant.norm.filtered.vcf.gz:md5,f054042e4ba7f7e90de3a3b77ead6030",
+            "NA12878.deepvariant.norm.filtered.vcf.gz.tbi",
+            "NA12878.haplotypecaller.norm.filtered.vcf.gz:md5,e8fec9ef3df8aab87e050a71abf435cf",
+            "NA12878.haplotypecaller.norm.filtered.vcf.gz.tbi",
+            "HCC1395.HCC1395T.norm.filtered.vcf.gz:md5,5c3ec863c8997ca460cc114885f804c4",
+            "HCC1395.HCC1395T.norm.filtered.vcf.gz.tbi"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T15:35:01.500646"
+    }
+}

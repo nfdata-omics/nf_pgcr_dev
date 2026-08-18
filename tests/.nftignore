@@ -1,4 +1,6 @@
 .DS_Store
+fastqc/*_fastqc.{html,zip}
+multiqc/multiqc_data/fastqc_top_overrepresented_sequences_table.txt
 multiqc/multiqc_data/multiqc.parquet
 multiqc/multiqc_data/multiqc.log
 multiqc/multiqc_data/multiqc_data.json
@@ -8,3 +10,7 @@ multiqc/multiqc_data/llms-full.txt
 multiqc/multiqc_plots/{svg,pdf,png}/*.{svg,pdf,png}
 multiqc/multiqc_report.html
 pipeline_info/*.{html,json,txt,yml}
+reference/**
+**/*.{vcf,vcf.gz,vcf.gz.tbi}
+pcgr/**/*.{conf,html,yaml,xlsx}
+cpsr/**/*.{conf,html,yaml,xlsx}

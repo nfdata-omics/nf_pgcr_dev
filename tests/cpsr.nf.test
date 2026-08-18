@@ -1,0 +1,22 @@
+nextflow_pipeline {
+
+    name "Test pipeline"
+    script "../main.nf"
+    tag "pipeline"
+    tag "ci_test"
+
+    def test_scenario = [
+        [
+            name: "-profile test | CPSR",
+            params: [
+                input: "https://github.com/nf-core/test-datasets/raw/refs/heads/variantprioritization/samplesheets/cpsr.csv",
+                panel_id: "21",
+            ]
+        ]
+    ]
+
+    // Generate tests for each scenario
+    test_scenario.each { scenario ->
+        test(scenario.name, UTILS.get_test(scenario))
+    }
+}

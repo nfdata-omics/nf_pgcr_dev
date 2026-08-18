@@ -1,0 +1,14 @@
+{
+    "human - vcf,cna": {
+        "content": [
+            "HCC1395.HCC1395T.vcf.gz:md5,6eec94611ca16c11818fd820a725b884",
+            "HCC1395.HCC1395T.vcf.gz.tbi",
+            "HCC1395T.reformatted.allelic_cna.tsv:md5,17d7fc79d8e60ac5f9b3dc007c33b97d"
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T15:10:38.872018"
+    }
+}

@@ -1,0 +1,113 @@
+name: pcgr_preparevcf
+description: Prepare PCGR-compatible VCF files from intersected somatic VCF inputs using the local pcgr_vcf.py script
+keywords:
+  - pcgr
+  - vcf
+  - somatic
+  - preparation
+tools:
+  - pcgr_vcf:
+      description: |
+        Local helper script that reformats somatic VCF data into a PCGR-compatible VCF and creates a tabix index.
+      documentation: https://github.com/nf-core/variantprioritization
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'patient.sample', patient:'patient', sample:'sample' ]
+    - keys:
+        type: file
+        description: Variant-to-caller key mapping file
+        pattern: "*.txt"
+    - vcfs:
+        type: file
+        description: Input VCF file(s) to convert to PCGR format
+        pattern: "*.{vcf,vcf.gz}"
+    - tbis:
+      type: file
+      description: Tabix index file(s) corresponding to compressed input VCF files
+      pattern: "*.tbi"
+  - - pcgr_header:
+        type: file
+        description: Header template prepended to output VCF
+        pattern: "*.txt"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz":
+          type: file
+          description: PCGR-ready bgzipped VCF
+          pattern: "*.vcf.gz"
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for PCGR-ready VCF
+          pattern: "*.vcf.gz.tbi"
+  versions_numpy:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - numpy:
+          type: string
+          description: The tool name
+      - "python -c 'import numpy; print(numpy.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pandas:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pandas:
+          type: string
+          description: The tool name
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pysam:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pysam:
+          type: string
+          description: The tool name
+      - "python -c 'import pysam; print(pysam.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - python:
+          type: string
+          description: The tool name
+      - "python --version | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+  versions_vcf2tsvpy:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - vcf2tsvpy:
+          type: string
+          description: The tool name
+      - "vcf2tsvpy --version  | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - tool:
+          type: string
+          description: Tool name
+      - version:
+          type: string
+          description: Reported tool version
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::pysam=0.23.3
+  - bioconda::vcf2tsvpy=0.6.1
+  - conda-forge::numpy=2.2.6
+  - conda-forge::pandas=2.3.3
+  - conda-forge::python=3.10.19

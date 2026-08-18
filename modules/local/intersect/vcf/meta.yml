@@ -1,0 +1,92 @@
+name: intersect_vcf
+description: Intersect grouped somatic VCF calls and generate a variant-to-caller mapping key file
+keywords:
+  - vcf
+  - intersect
+  - somatic
+  - bcftools
+tools:
+  - isec_vcfs.py:
+      description: |
+        Local helper script that runs bcftools isec across grouped caller VCFs,
+        parses intersection bitmasks, and writes a CHROM/POS/REF/ALT/TAL mapping file.
+      documentation: https://github.com/nf-core/variantprioritization
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing grouped sample information
+            e.g. [ id:'patient.sample', patient:'patient', sample:'sample', status:'somatic', tools:['mutect2','strelka'] ]
+    - vcfs:
+        type: file
+        description: Grouped input VCF file(s) staged for intersection
+        pattern: "*.{vcf,vcf.gz}"
+    - tbis:
+        type: file
+        description: Grouped tabix index file(s) matching compressed VCF inputs
+        pattern: "*.tbi"
+output:
+  variant_tool_map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing grouped sample information
+      - "*_keys.txt":
+          type: file
+          description: Variant-to-caller mapping file with columns CHROM, POS, REF, ALT, TAL
+          pattern: "*_keys.txt"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: string
+          description: The command used to obtain the version
+  versions_pandas:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pandas:
+          type: string
+          description: The tool name
+      - "python -c 'import pandas; print(pandas.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_pysam:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - pysam:
+          type: string
+          description: The tool name
+      - "python -c 'import pysam; print(pysam.__version__)'":
+          type: string
+          description: The command used to obtain the version
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - python:
+          type: string
+          description: The tool name
+      - "python --version | cut -d' ' -f2":
+          type: string
+          description: The command used to obtain the version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - tool:
+          type: string
+          description: Tool name
+      - version:
+          type: string
+          description: Reported tool version
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

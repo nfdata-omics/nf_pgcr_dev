@@ -1,0 +1,59 @@
+{
+    "human - vcf.gz": {
+        "content": [
+            {
+                "vcf": [
+                    [
+                        {
+                            "id": "HCC1395.HCC1395T",
+                            "patient": "HCC1395",
+                            "sample": "HCC1395T"
+                        },
+                        "HCC1395.HCC1395T.vcf.gz:md5,164b1de3071ec71f37e9544301ac2c8b",
+                        "HCC1395.HCC1395T.vcf.gz.tbi:md5,6498603f8b0698bd2fdf61c608f39054"
+                    ]
+                ],
+                "versions_numpy": [
+                    [
+                        "PCGR_PREPAREVCF",
+                        "numpy",
+                        "2.2.6"
+                    ]
+                ],
+                "versions_pandas": [
+                    [
+                        "PCGR_PREPAREVCF",
+                        "pandas",
+                        "2.3.3"
+                    ]
+                ],
+                "versions_pysam": [
+                    [
+                        "PCGR_PREPAREVCF",
+                        "pysam",
+                        "0.23.3"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "PCGR_PREPAREVCF",
+                        "python",
+                        "3.10.19"
+                    ]
+                ],
+                "versions_vcf2tsvpy": [
+                    [
+                        "PCGR_PREPAREVCF",
+                        "vcf2tsvpy",
+                        "0.6.1"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T11:08:55.080661"
+    }
+}

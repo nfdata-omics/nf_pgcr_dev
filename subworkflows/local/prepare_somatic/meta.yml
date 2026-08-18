@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "prepare_somatic"
+description: Reformat somatic VCF and CNA files, intersect per-sample VCFs across callers, and produce a PCGR-ready VCF with optional CNA data
+keywords:
+  - vcf
+  - cna
+  - somatic
+  - reformat
+  - intersect
+  - pcgr
+components:
+  - reformat/vcf
+  - reformat/cna
+  - intersect/vcf
+  - pcgr/preparevcf
+input:
+  - vcf_files:
+      type: map
+      description: |
+        Channel of somatic VCF tuples with metadata, compressed VCF, and TBI index.
+        Structure: [ val(meta), path(vcf.gz), path(vcf.gz.tbi) ]
+  - cna_files:
+      type: map
+      description: |
+        Channel of CNA file tuples with metadata.
+        Structure: [ val(meta), path(cna) ]
+
+output:
+  - pcgr_ready_vcf:
+      type: map
+      description: |
+        Channel of PCGR-ready VCF tuples with optional CNA data appended.
+        When params.cna_analysis is true: [ val(meta), path(vcf.gz), path(vcf.gz.tbi), path(cna) ]
+        Otherwise: [ val(meta), path(vcf.gz), path(vcf.gz.tbi), [] ]
+      pattern: "*.vcf.gz"
+authors:
+  - "@famosab"
+maintainers:
+  - "@famosab"

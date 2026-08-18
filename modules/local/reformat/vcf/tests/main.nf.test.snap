@@ -1,0 +1,43 @@
+{
+    "human - [vcf, tbi]": {
+        "content": [
+            "6cb64a2f10b6150db344220e68ccbcd3",
+            "HCC1395.HCC1395T.reformatted.vcf.gz.tbi",
+            {
+                "versions_bcftools": [
+                    [
+                        "REFORMAT_VCF",
+                        "bcftools",
+                        "1.23.1"
+                    ]
+                ],
+                "versions_pandas": [
+                    [
+                        "REFORMAT_VCF",
+                        "pandas",
+                        "2.3.3"
+                    ]
+                ],
+                "versions_pysam": [
+                    [
+                        "REFORMAT_VCF",
+                        "pysam",
+                        "0.23.3"
+                    ]
+                ],
+                "versions_python": [
+                    [
+                        "REFORMAT_VCF",
+                        "python",
+                        "3.10.19"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        },
+        "timestamp": "2026-03-16T11:59:00.824956"
+    }
+}

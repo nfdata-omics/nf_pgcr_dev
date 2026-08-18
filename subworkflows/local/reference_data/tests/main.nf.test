@@ -1,0 +1,35 @@
+nextflow_workflow {
+
+    name "Test Subworkflow REFERENCE_DATA"
+    script "../main.nf"
+    workflow "REFERENCE_DATA"
+
+    tag "subworkflows"
+    tag "subworkflows_"
+    tag "subworkflows/reference_data"
+    tag "pcgr/getref"
+    tag "ci_test"
+
+    test("20250314 - 113") {
+
+        when {
+            workflow {
+                """
+                input[0] = 'GRCh38'
+                input[1] = false
+                input[2] = '20250314'
+                input[3] = 'https://github.com/nf-core/test-datasets/raw/refs/heads/variantprioritization/reference/pcgr_ref_grch38_chr22.tar.gz'
+                input[4] = 'https://github.com/nf-core/test-datasets/raw/refs/heads/variantprioritization/reference/vep_cache_113_GRCh38_chr22.tar.gz'
+                input[5] = '113'
+                input[6] = 'homo_sapiens'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+}
