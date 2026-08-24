@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#93](https://github.com/nf-core/variantprioritization/pull/93) - Template update for nf-core/tools v4.0.2 (@HomoPolyethylen)
 - [#96](https://github.com/nf-core/variantprioritization/pull/96) - moved sample-specific PCGR parameters to samplesheet (@HomoPolyethylen)
 - [#100](https://github.com/nf-core/variantprioritization/pull/100) - updated modules and subworkflows (@HomoPolyethylen)
+- [#101](https://github.com/nf-core/variantprioritization/pull/101) - Template update for nf-core/tools v4.0.3 (@famosab)
 
 ### Fixed
 
